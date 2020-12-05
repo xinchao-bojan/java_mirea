@@ -22,21 +22,23 @@ public class System {
 	private String reportPath = "http://80.87.199.76:3000/reports/";
 	private Gson gson = new Gson();
 	private HttpClient httpClient = HttpClient.newHttpClient();
-	private int id = 1;
 	private List<Task> taskList;
 	private List<Report> reportList;
+	private int id;
 
 	public void execApp() throws IOException, InterruptedException {
-		Type type = new TypeToken<ArrayList<Report>>() {}.getType();
-		List<Report> rp = null;
-		try (FileReader r = new FileReader(localPath)) {
-			rp = gson.fromJson(r, type);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		reportList = rp;
-
 		while (true) {
+
+			Type type = new TypeToken<ArrayList<Report>>() {}.getType();
+			List<Report> rp = null;
+			try (FileReader r = new FileReader(localPath)) {
+				rp = gson.fromJson(r, type);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			reportList = rp;
+			id = reportList.size()+1;
+
 			Type collectionType = new TypeToken<Collection<Task>>() {
 			}.getType();
 			HttpRequest httpRequest = HttpRequest.newBuilder()
@@ -45,13 +47,12 @@ public class System {
 					.build();
 			HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
 			taskList = gson.fromJson(response.body(), collectionType);
-
-			for (Task task : taskList) {
-				if (updateCheck(task) && (task.getId() == id)) {
-					fileWriter(reporter(worker(task.getExpression())));
-					id = id + 1;
+				if ( taskList.size()>reportList.size()) {
+					for (int i = reportList.size(); i < taskList.size(); i++)
+						fileWriter(reporter(worker(taskList.get(i).getExpression())));
+						id=id+1;
 				}
-			}
+
 			try {
 				Thread.sleep((int) (Math.random() * 1000 + 1000));
 			} catch (InterruptedException e) {
@@ -125,12 +126,4 @@ public class System {
 		}
 	}
 
-	private boolean updateCheck(Task task) {
-		for (Report report : reportList) {
-			if (report.getTaskId() == task.getId()) {
-				return false;
-			}
-		}
-		return true;
-	}
 }

@@ -85,35 +85,6 @@ public class MyHashMap<K, V> implements HashMapInterface<K, V> {
 			return (V) myHash.get(higherIndex).get(lowerIndex++).getValue();
 		}
 	}
-	/*private class CustomIterator<V> implements Iterator<V>
-	{
-		private int lowerIndex=0;
-		private int higherIndex=0;
-		@Override
-		public boolean hasNext() {
-
-			if(higherIndex==size-1)
-				return false;
-
-			while (myHash.get(higherIndex+1).size()==0){
-				higherIndex++;
-				lowerIndex=0;
-				if(higherIndex==size-1)
-					return false;
-			}
-
-			if(lowerIndex==myHash.get(higherIndex).size()) {
-				higherIndex++;
-				lowerIndex=0;
-			}
-			return (higherIndex<size) &&
-					(lowerIndex < myHash.get(higherIndex).size());
-		}
-		@Override
-		public V next() {
-			return myHash.get(higherIndex).get(lowerIndex++).getValue();
-		}
-	}*/
 }
 
 
