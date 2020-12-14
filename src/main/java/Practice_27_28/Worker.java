@@ -20,15 +20,15 @@ public class Worker {
 
 	public String print(Data data)
 	{
-		String sb="";
+		StringBuilder sb=new StringBuilder();
 		ArrayList<String> arr= data.getWords();
 		String delimeter=data.getDelimeter();
 		for (int i = 0; i < arr.size()-1; i++) {
-			sb+=arr.get(i)+delimeter;
+			sb.append(arr.get(i)+delimeter);
 			System.out.print(arr.get(i)+delimeter);
 		}
-		sb+=arr.get((arr.size()-1));
+		sb.append(arr.get((arr.size()-1)));
 		System.out.print(arr.get((arr.size()-1)));
-		return sb;
+		return String.valueOf(sb);
 	}
 }
