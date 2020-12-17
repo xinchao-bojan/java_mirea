@@ -1,11 +1,11 @@
 package Practice_27_28;
 
-import Practice_17_18.Something;
 
 import java.util.ArrayList;
 
 public class Worker {
 
+	@MyAnnotation(operation="sum")
 	public int sum(Data data)
 	{
 		int sum=0;
@@ -18,6 +18,7 @@ public class Worker {
 		return sum;
 	}
 
+	@MyAnnotation(operation="print")
 	public String print(Data data)
 	{
 		StringBuilder sb=new StringBuilder();
